@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/u/sw/toolchains/gcc-glibc/11.2.0/base/include",
+                "/u/sw/toolchains/gcc-glibc/11.2.0/pkgs/eigen/3.3.9/include/eigen3",
+                "/u/sw/toolchains/gcc-glibc/11.2.0/pkgs/lis/2.0.30/include",
+                "/u/sw/toolchains/gcc-glibc/11.2.0/pkgs/dealii/9.3.1/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "",
+            "cStandard": "c17",
+            "cppStandard": "c++20"
+        }
+    ],
+    "version": 4
+}
