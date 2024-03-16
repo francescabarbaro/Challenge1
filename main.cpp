@@ -23,7 +23,7 @@ int main (){
     Data data;
     data.f = f;
     data.grad = grad;
-    data.start_point = {0.0,0.0};
+    data.start_point = {5.0,0.0};
     data.epsilon_step = std::pow(10,-6);
     data.epsilon_res = std::pow(10,-6);
     data.initial_step = 1;
@@ -36,11 +36,9 @@ int main (){
 
     std::cout << "the minimum point is: ";
     for(std::size_t i=0; i<minimum.size(); ++i)
-        std::cout<<minimum[i]<<"  "<<std::endl;
-    return 0;
+        std::cout<<minimum[i]<<"\t";
 
-
-
+    std::cout<<std::endl;
 
     return 0;
 

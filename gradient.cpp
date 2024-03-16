@@ -9,8 +9,8 @@ std::vector<double> gradient_method(const Data &data)
     double alpha = data.initial_step;
 
     unsigned int i{0}; //counter 
-
-    while(i< data.maxit && norm(current_point - previous_point) < data.epsilon_step && norm(data.grad(current_point)) < data.epsilon_res){
+    double error_step=data.epsilon_step+1;
+    while(i< data.maxit &&  error_step > data.epsilon_step && norm(data.grad(current_point)) > data.epsilon_res){
 
         //update previous_point
         previous_point = current_point;
@@ -21,10 +21,16 @@ std::vector<double> gradient_method(const Data &data)
         //update current_point
         current_point = current_point - alpha * data.grad(current_point);
 
-
+        //update the error_step
+        error_step = norm(current_point - previous_point);
         //increase counter
         ++i;
     }
+
+    //std::cout<<alpha<<std::endl; //problema con il valore di alpha
+    //std::cout<<norm(data.grad(current_point))<<std::endl;
+    //std::cout<<error_step<<std::endl; //0
+    //std::cout<<i<<std::endl;
 
 
     return current_point;
@@ -37,7 +43,12 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
 
     //condition to be satisfied
     bool cond= false;
-    cond = data.f(current_point) - data.f(current_point - alpha_k * grad) >= data.sigma* std::pow(norm(grad),2);
+    double sx{0.0};
+    double dx{0.0};
+
+    sx = data.f(current_point) - data.f(current_point - alpha_k * grad);
+    dx = data.sigma*alpha_k* std::pow(norm(grad),2);
+    cond = sx >= dx;
 
     //counter
     unsigned int i = 0;
@@ -46,7 +57,9 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
         //update alpha
         alpha_k= alpha_k/2;
         //check the condition
-        cond = data.f(current_point) - data.f(current_point - alpha_k * grad) >= data.sigma* std::pow(norm(grad),2);
+        sx = data.f(current_point) - data.f(current_point - alpha_k * grad);
+        dx = data.sigma* alpha_k * std::pow(norm(grad),2);
+        cond = sx >= dx;
         //increase the counter
         ++i;
     }
