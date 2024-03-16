@@ -1,6 +1,6 @@
 # Challenge1
 First challenge PACS course
 
-Francesca Barbaro \\
-Codice persona: 10662154 \\
+Francesca Barbaro \n
+Codice persona: 10662154 \n
 Matricola: 220332
