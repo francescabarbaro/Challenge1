@@ -16,18 +16,18 @@ struct Data
 
     double epsilon_step{0.01};  //tolerance on the step length
     double epsilon_res{0.01};   //tolerance on the residual
-    double initial_step{1.0};   //initial step size
+    double initial_step{0.5};   //initial step size
     double maxit{1000};         //maximum number of iterations
     double sigma{0.3};          //parameter for Armijo rule
-    double mu{0.2};             //parameter for exponential and inverse decay
+    double mu{0.92};             //parameter for exponential and inverse decay
 };
 
 
 std::vector<double> gradient_method(const Data& );
 
 double Armijo(const Data& , std::vector<double> & );
-double Exponential_decay(const Data& , unsigned int);
-double Inverse_decay(const Data& , unsigned int);
+double Exponential_decay(const Data& ,  int);
+double Inverse_decay(const Data& ,  int);
 
 double norm(const std::vector<double> &  );
 

@@ -26,10 +26,10 @@ int main (){
     data.start_point = {0.0,0.0};
     data.epsilon_step = std::pow(10,-6);
     data.epsilon_res = std::pow(10,-6);
-    data.initial_step = 1.0;
+    data.initial_step = 0.25;
     data.maxit = 1000;
     data.sigma = 0.3;
-    data.mu = 0.2;
+    data.mu = 0.5;
 
     // find the minimum point in the function f
     std::vector<double> minimum = data.start_point;

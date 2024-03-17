@@ -7,23 +7,31 @@ std::vector<double> gradient_method(const Data &data)
     std::vector<double> current_point = data.start_point;
     std::vector<double> previous_point = data.start_point;
     double alpha = data.initial_step;
+    std::vector<double> grad =  data.grad(current_point);
 
     unsigned int i{0}; //counter
     double error_step=data.epsilon_step+1;
-    while(i< data.maxit &&  error_step > data.epsilon_step && norm(data.grad(current_point)) > data.epsilon_res){
+    while(i< data.maxit &&  error_step > data.epsilon_step && norm(grad) > data.epsilon_res){
 
         //update previous_point
         previous_point = current_point;
 
         //update step size
         //alpha = Armijo(data, current_point);
-        alpha = Exponential_decay( data, i);
-        //alpha = Inverse_decay( data, i);
-std::cout<<alpha<<std::endl;
+        //alpha = Exponential_decay( data, i);
+        alpha = Inverse_decay( data, i);
+
+
+
+std::cout<<"alpha: "<<alpha<<std::endl;
+        std::cout<<"normal grad: "<<norm(data.grad(current_point))<<std::endl;
 
         //update current_point
-        current_point = current_point - alpha * data.grad(current_point);
-        std::cout<<current_point[0]<<current_point[i]<<std::endl;
+        grad = data.grad(current_point);
+        std::cout<<"grad current point: "<<grad[0]<<"  "<<grad[1]<<std::endl;
+
+        current_point = current_point - alpha * grad;
+        std::cout<<"current point: "<<current_point[0]<<"  "<<current_point[1]<<std::endl;
 
         //update the error_step
         error_step = norm(current_point - previous_point);
@@ -71,14 +79,14 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
     return alpha_k;
 }
 //Function to define the next step size with exponential decay method
-double Exponential_decay(const Data & data, unsigned int k) {
+double Exponential_decay(const Data & data,  int k) {
     double alpha_k = data.initial_step;
-    alpha_k = data.initial_step* std::exp(-data.mu*k);
+    alpha_k = alpha_k * std::exp(- data.mu * k);
     return alpha_k;
 }
 
 //Function to define the next step with inverse decay method
-double Inverse_decay(const Data & data, unsigned int k) {
+double Inverse_decay(const Data & data,  int k) {
     double alpha_k = data.initial_step;
     alpha_k = data.initial_step/(1+data.mu*k);
     return alpha_k;
