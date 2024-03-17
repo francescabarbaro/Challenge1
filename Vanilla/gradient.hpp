@@ -16,7 +16,7 @@ struct Data
     
     double epsilon_step{0.01};  //tolerance on the step length
     double epsilon_res{0.01};   //tolerance on the residual
-    double initial_step{1};     //initial step size
+    double initial_step{1.0};     //initial step size
     double maxit{1000};         //maximum number of iterations
     double sigma{0.3};          //parameter for Armijo rule
 };

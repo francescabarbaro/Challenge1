@@ -26,7 +26,7 @@ int main (){
     data.start_point = {5.0,0.0};
     data.epsilon_step = std::pow(10,-6);
     data.epsilon_res = std::pow(10,-6);
-    data.initial_step = 1;
+    data.initial_step = 1.0;
     data.maxit = 1000;
     data.sigma = 0.3;
 
