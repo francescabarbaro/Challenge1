@@ -17,9 +17,9 @@ std::vector<double> gradient_method(const Data &data)
         previous_point = current_point;
 
         //update step size
-        //alpha = Armijo(data, current_point);
+        alpha = Armijo(data, current_point);
         //alpha = Exponential_decay( data, i);
-        alpha = Inverse_decay( data, i);
+        //alpha = Inverse_decay( data, i);
 
 
 
