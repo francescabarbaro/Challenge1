@@ -1,7 +1,7 @@
 #include "gradient.hpp"
 
-
-std::vector<double> gradient_method(const Data &data)
+template <typename StepMethod >
+std::vector<double> gradient_method(const Data &data, StepMethod method)
 {
     //initial values
     std::vector<double> current_point = data.start_point;
@@ -16,11 +16,14 @@ std::vector<double> gradient_method(const Data &data)
         //update previous_point
         previous_point = current_point;
 
-        //update step size
-        alpha = Armijo(data, current_point);
-        //alpha = Exponential_decay( data, i);
-        //alpha = Inverse_decay( data, i);
-
+        // Update step size based on the selected method using constexpr
+        if constexpr (method == StepMethod::Armijo) {
+            alpha = Armijo(data, current_point);
+        } else if constexpr (method == StepMethod::Exponential_decay) {
+            alpha = Exponential_decay(data, i);
+        } else if constexpr (method == StepMethod::Inverse_decay) {
+            alpha = Inverse_decay(data, i);
+        }
 
 
 std::cout<<"alpha: "<<alpha<<std::endl;
@@ -136,4 +139,25 @@ std::vector<double> operator*(double scalar, const std::vector<double> vec) {
     return result;
 }
 
+// user selection of the step method
+StepMethod selectStepMethod() {
+    int choice;
+    std::cout << "Seleziona il metodo per l'aggiornamento del passo:" << std::endl;
+    std::cout << "1. Armijo" << std::endl;
+    std::cout << "2. Exponential Decay" << std::endl;
+    std::cout << "3. Inverse Decay" << std::endl;
+    std::cout << "Scelta: ";
+    std::cin >> choice;
 
+    switch (choice) {
+        case 1:
+            return StepMethod::Armijo;
+        case 2:
+            return StepMethod::Exponential_decay;
+        case 3:
+            return StepMethod::Inverse_decay;
+        default:
+            std::cerr << "Non valid choice. The default method (Armijo) is used." << std::endl;
+            return StepMethod::Armijo;
+    }
+}

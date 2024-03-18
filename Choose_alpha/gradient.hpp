@@ -22,8 +22,19 @@ struct Data
     double mu{0.92};             //parameter for exponential and inverse decay
 };
 
+// Enumerator for the choice of the alpha step
+enum class StepMethod {
+    Armijo,
+    Exponential_decay,
+    Inverse_decay
+};
 
-std::vector<double> gradient_method(const Data& );
+// function to choose the method
+//StepMethod selectStepMethod();
+
+template <typename StepMethod >
+std::vector<double> gradient_method(const Data& , StepMethod);
+
 
 double Armijo(const Data& , std::vector<double> & );
 double Exponential_decay(const Data& ,  int);
