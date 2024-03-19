@@ -19,7 +19,7 @@ struct Data
     double initial_step{0.5};   //initial step size
     double maxit{1000};         //maximum number of iterations
     double sigma{0.3};          //parameter for Armijo rule
-    double mu{0.92};             //parameter for exponential and inverse decay
+    double mu{0.92};            //parameter for exponential and inverse decay
 };
 
 // Enumerator for the choice of the alpha step
