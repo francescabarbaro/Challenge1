@@ -34,8 +34,8 @@ int main (){
     // define the minimum
     //std::vector<double> minimum = data.start_point;
 
-    StepMethod constexpr method = StepMethod::Armijo; // Metodo selezionato
-    auto minimum = gradient_method<StepMethod>(data, method);
+    //StepMethod method = StepMethod::Armijo; // Metodo selezionato
+    auto minimum = gradient_method(data);
 
     /*// Select the method for updating the step size
     StepMethod selectedMethod = selectStepMethod();

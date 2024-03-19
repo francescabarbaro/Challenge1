@@ -32,13 +32,14 @@ enum class StepMethod {
 // function to choose the method
 //StepMethod selectStepMethod();
 
-template <typename StepMethod >
-std::vector<double> gradient_method(const Data& , StepMethod);
+template <StepMethod > auto choose_alpha(const Data &, std::vector<double> & , unsigned int);
+
+std::vector<double> gradient_method(const Data& );
 
 
 double Armijo(const Data& , std::vector<double> & );
-double Exponential_decay(const Data& ,  int);
-double Inverse_decay(const Data& ,  int);
+double Exponential_decay(const Data& , unsigned int);
+double Inverse_decay(const Data& ,unsigned  int);
 
 double norm(const std::vector<double> &  );
 

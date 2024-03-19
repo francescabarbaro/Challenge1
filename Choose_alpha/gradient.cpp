@@ -1,7 +1,16 @@
 #include "gradient.hpp"
 
-template <typename StepMethod >
-std::vector<double> gradient_method(const Data &data, StepMethod method)
+template < StepMethod method>
+auto choose_alpha(const Data & data, std::vector<double> & current_point, unsigned int i){
+    if constexpr (method == StepMethod::Armijo) {
+        return  Armijo(data, current_point);
+    } else if constexpr (method == StepMethod::Exponential_decay) {
+        return  Exponential_decay(data, i);
+    } else if constexpr (method == StepMethod::Inverse_decay) {
+        return  Inverse_decay(data, i);
+    }
+}
+std::vector<double> gradient_method(const Data &data)
 {
     //initial values
     std::vector<double> current_point = data.start_point;
@@ -17,13 +26,14 @@ std::vector<double> gradient_method(const Data &data, StepMethod method)
         previous_point = current_point;
 
         // Update step size based on the selected method using constexpr
-        if constexpr (method == StepMethod::Armijo) {
+        alpha = choose_alpha<StepMethod::Exponential_decay>(data, current_point, i);
+       /* if constexpr (method == StepMethod::Armijo) {
             alpha = Armijo(data, current_point);
         } else if constexpr (method == StepMethod::Exponential_decay) {
             alpha = Exponential_decay(data, i);
         } else if constexpr (method == StepMethod::Inverse_decay) {
             alpha = Inverse_decay(data, i);
-        }
+        }*/
 
 
 std::cout<<"alpha: "<<alpha<<std::endl;
@@ -82,14 +92,14 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
     return alpha_k;
 }
 //Function to define the next step size with exponential decay method
-double Exponential_decay(const Data & data,  int k) {
+double Exponential_decay(const Data & data,  unsigned int k) {
     double alpha_k = data.initial_step;
     alpha_k = alpha_k * std::exp(- data.mu * k);
     return alpha_k;
 }
 
 //Function to define the next step with inverse decay method
-double Inverse_decay(const Data & data,  int k) {
+double Inverse_decay(const Data & data, unsigned int k) {
     double alpha_k = data.initial_step;
     alpha_k = data.initial_step/(1+data.mu*k);
     return alpha_k;
@@ -139,25 +149,3 @@ std::vector<double> operator*(double scalar, const std::vector<double> vec) {
     return result;
 }
 
-// user selection of the step method
-StepMethod selectStepMethod() {
-    int choice;
-    std::cout << "Seleziona il metodo per l'aggiornamento del passo:" << std::endl;
-    std::cout << "1. Armijo" << std::endl;
-    std::cout << "2. Exponential Decay" << std::endl;
-    std::cout << "3. Inverse Decay" << std::endl;
-    std::cout << "Scelta: ";
-    std::cin >> choice;
-
-    switch (choice) {
-        case 1:
-            return StepMethod::Armijo;
-        case 2:
-            return StepMethod::Exponential_decay;
-        case 3:
-            return StepMethod::Inverse_decay;
-        default:
-            std::cerr << "Non valid choice. The default method (Armijo) is used." << std::endl;
-            return StepMethod::Armijo;
-    }
-}
