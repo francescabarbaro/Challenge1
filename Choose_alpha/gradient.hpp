@@ -29,24 +29,24 @@ enum class StepMethod {
     Inverse_decay
 };
 
-// function to choose the method
-//StepMethod selectStepMethod();
-
-template <StepMethod > auto choose_alpha(const Data &, std::vector<double> & , unsigned int);
-
+// Function to implement the gradient descent:
+// inside the cpp of this function you can select the method for choose the step alpha
 std::vector<double> gradient_method(const Data& );
 
+// Function to choose the method
+template <StepMethod method> auto choose_alpha(const Data &, std::vector<double> & , unsigned int);
 
+// Functions to implement the choice of alpha
 double Armijo(const Data& , std::vector<double> & );
 double Exponential_decay(const Data& , unsigned int);
 double Inverse_decay(const Data& ,unsigned  int);
 
+// Norm of two vectors
 double norm(const std::vector<double> &  );
 
+// Operators
 std::vector<double> operator-(std::vector<double>, std::vector<double>);
 std::vector<double> operator*(double, std::vector<double>);
-
-
 
 
 #endif // GRADIENT_HPP

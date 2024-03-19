@@ -1,15 +1,19 @@
 #include "gradient.hpp"
 
+
+//Template function to select the alpha method
 template < StepMethod method>
 auto choose_alpha(const Data & data, std::vector<double> & current_point, unsigned int i){
-    if constexpr (method == StepMethod::Armijo) {
+    if constexpr ( method == StepMethod::Armijo) {
         return  Armijo(data, current_point);
     } else if constexpr (method == StepMethod::Exponential_decay) {
         return  Exponential_decay(data, i);
     } else if constexpr (method == StepMethod::Inverse_decay) {
         return  Inverse_decay(data, i);
-    }
+    } else
+        return Armijo(data, current_point);
 }
+
 std::vector<double> gradient_method(const Data &data)
 {
     //initial values
@@ -22,29 +26,33 @@ std::vector<double> gradient_method(const Data &data)
     double error_step=data.epsilon_step+1;
     while(i< data.maxit &&  error_step > data.epsilon_step && norm(grad) > data.epsilon_res){
 
-        //update previous_point
+        // update previous_point
         previous_point = current_point;
 
-        // Update step size based on the selected method using constexpr
-        alpha = choose_alpha<StepMethod::Exponential_decay>(data, current_point, i);
-       /* if constexpr (method == StepMethod::Armijo) {
-            alpha = Armijo(data, current_point);
-        } else if constexpr (method == StepMethod::Exponential_decay) {
-            alpha = Exponential_decay(data, i);
-        } else if constexpr (method == StepMethod::Inverse_decay) {
-            alpha = Inverse_decay(data, i);
-        }*/
+        // update current_point
+        current_point = current_point - alpha * grad;
+        std::cout<<"current point: "<<current_point[0]<<"  "<<current_point[1]<<std::endl;
 
-
-std::cout<<"alpha: "<<alpha<<std::endl;
-        std::cout<<"normal grad: "<<norm(data.grad(current_point))<<std::endl;
-
-        //update current_point
+        //update the gradient gradient
         grad = data.grad(current_point);
         std::cout<<"grad current point: "<<grad[0]<<"  "<<grad[1]<<std::endl;
 
-        current_point = current_point - alpha * grad;
-        std::cout<<"current point: "<<current_point[0]<<"  "<<current_point[1]<<std::endl;
+        // Update step size based on the selected method using constexpr
+        /*
+         * HOW TO SELECT THE METHOD:
+         * in choose_alpha<...>
+         * 1) Armijo: replace ... with → StepMethod::Armijo
+         * 2) Exponential_decay: replace ... with → StepMethod::Exponential_decay
+         * 3) Inverse_decay: replace ... with → StepMethod::Inverse_decay
+         *
+         * if a non-existing choice is made the defaul method Armijo is employed
+         */
+        alpha = choose_alpha<StepMethod::Armijo>(data, current_point, i);
+
+
+        std::cout<<"alpha: "<<alpha<<std::endl;
+        std::cout<<"norm grad: "<<norm(data.grad(current_point))<<std::endl;
+
 
         //update the error_step
         error_step = norm(current_point - previous_point);
@@ -107,7 +115,7 @@ double Inverse_decay(const Data & data, unsigned int k) {
 
 
 
-// function to evaluate the eucledean norm of a vector
+// function to evaluate the euclidean norm of a vector
 double norm(const std::vector<double> &x) {
     double vec_norm = 0.0;
     //euclidean norm
