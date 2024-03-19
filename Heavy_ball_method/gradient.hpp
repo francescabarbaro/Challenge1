@@ -18,15 +18,15 @@ struct Data
     double epsilon_res{0.01};   //tolerance on the residual
     double initial_step{0.5};   //initial step size
     double maxit{1000};         //maximum number of iterations
-    //double sigma{0.3};          //parameter for Armijo rule
     double mu{0.92};            //parameter for exponential and inverse decay
     double eta{0.9};            //memory parameter heavy ball
 };
 
 
-std::vector<double> gradient_method(const Data& );
+std::vector<double> Heavy_ball(const Data& );
+std::vector<double> Nesterov(const Data& );
 
-//double Armijo(const Data& , std::vector<double> & );
+
 double Exponential_decay(const Data& , unsigned int);
 double Inverse_decay(const Data& , unsigned int);
 

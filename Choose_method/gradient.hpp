@@ -17,16 +17,18 @@ struct Data
     double epsilon_step{0.01};  //tolerance on the step length
     double epsilon_res{0.01};   //tolerance on the residual
     double initial_step{0.5};   //initial step size
+    double initial_step_nesterov {0.1}; // initial step size for the nesterov method
     double maxit{1000};         //maximum number of iterations
-    double mu{0.2};            //parameter for exponential and inverse decay
+    double mu{0.92};            //parameter for exponential and inverse decay
     double eta{0.9};            //memory parameter heavy ball
 };
 
-
+// Declaration of three function, one for each possible method
+std::vector<double> gradient_method(const Data& );
+std::vector<double> Heavy_ball(const Data& );
 std::vector<double> Nesterov(const Data& );
 
-double Exponential_decay(const Data& , unsigned int);
-double Inverse_decay(const Data& , unsigned int);
+double Inverse_decay(const Data& , unsigned int, const double );
 
 double norm(const std::vector<double> &  );
 

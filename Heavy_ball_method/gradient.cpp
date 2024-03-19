@@ -1,7 +1,7 @@
 #include "gradient.hpp"
 
 
-std::vector<double> gradient_method(const Data &data)
+std::vector<double> Heavy_ball(const Data &data)
 {
     //initial values
     std::vector<double> current_point = data.start_point;
@@ -16,10 +16,6 @@ std::vector<double> gradient_method(const Data &data)
 
         //update previous_point
         previous_point = current_point;
-
-        //update step size
-        //alpha = Armijo(data, current_point);
-        //alpha = Exponential_decay( data, i);
 
         //update current_point
         current_point = current_point + d;
@@ -52,36 +48,63 @@ std::vector<double> gradient_method(const Data &data)
     return current_point;
 }
 
-// function to find the next step size with the Armijo rule
-/*double Armijo(const Data &data, std::vector<double> &current_point) {
-    double alpha_k = data.initial_step;
-    std::vector<double> grad = data.grad(current_point);
 
-    //condition to be satisfied
-    bool cond= false;
-    double sx{0.0};
-    double dx{0.0};
 
-    sx = data.f(current_point) - data.f(current_point - alpha_k * grad);
-    dx = data.sigma*alpha_k* std::pow(norm(grad),2);
-    cond = sx >= dx;
+std::vector<double> Nesterov(const Data &data)
+{
+    //initial values
+    double alpha = data.initial_step;
 
-    //counter
-    unsigned int i = 0;
-    //while loop to find the next step size
-    while(!cond && i<data.maxit){
+    std::vector<double> previous_point = data.start_point;
+    std::vector<double> grad =  data.grad(previous_point);
+    std::vector<double> current_point = previous_point - alpha * grad;
+    std::vector<double> y = current_point + data.eta*(current_point - previous_point);
+
+    unsigned int i{0}; //counter
+    double error_step=data.epsilon_step+1;
+    while(i< data.maxit &&  error_step > data.epsilon_step && norm(grad) > data.epsilon_res){
+
+        //update previous_point
+        previous_point = current_point;
+
+        //update step size
+        //alpha = Armijo(data, current_point);
+        //alpha = Exponential_decay( data, i);
+
         //update alpha
-        alpha_k= alpha_k/2;
-        //check the condition
-        sx = data.f(current_point) - data.f(current_point - alpha_k * grad);
-        dx = data.sigma* alpha_k * std::pow(norm(grad),2);
-        cond = sx >= dx;
-        //increase the counter
+        alpha = Inverse_decay( data, i);
+        std::cout<<"alpha: "<<alpha<<std::endl;
+
+        //update gradient
+        grad = data.grad(y);
+        std::cout<<"grad current point: "<<grad[0]<<"  "<<grad[1]<<std::endl;
+
+        //update current_point
+        current_point = y - alpha*grad;
+        std::cout<<"current point: "<<current_point[0]<<"  "<<current_point[1]<<std::endl;
+
+        //update y
+        y = current_point + data.eta*(current_point - previous_point);
+
+
+        //update the error_step
+        error_step = norm(current_point - previous_point);
+
+        //increase counter
         ++i;
     }
 
-    return alpha_k;
-}*/
+    //std::cout<<alpha<<std::endl; //problema con il valore di alpha
+    std::cout<<norm(data.grad(current_point))<<std::endl;
+    std::cout<<error_step<<std::endl; //0
+    std::cout<<"number of iteration: "<<i<<std::endl;
+
+
+    return current_point;
+}
+
+
+
 
 //Function to define the next step size with exponential decay method
 double Exponential_decay(const Data & data, unsigned int k) {

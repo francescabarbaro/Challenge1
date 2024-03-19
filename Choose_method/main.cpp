@@ -26,20 +26,45 @@ int main (){
     data.start_point = {0.0,0.0};
     data.epsilon_step = std::pow(10,-6);
     data.epsilon_res = std::pow(10,-6);
-    data.initial_step = 0.1;
+    data.initial_step = 0.25;
+    data.initial_step_nesterov = 0.1;
     data.maxit = 1000;
-    //data.sigma = 0.3;
     data.mu = 0.5;
     data.eta = 0.9;
 
-    // find the minimum point in the function f
-    std::vector<double> minimum = data.start_point;
-    minimum = Nesterov(data);
+
+
+    //select the preferred method
+    std::cout << "Choose algorithm:\n"<<std::endl;
+    std::cout << "1. Heavy Ball\n"<<std::endl;
+    std::cout << "2. Nesterov's Accelerated Gradient Descent\n"<<std::endl;
+    std::cout << "3. Regular Gradient Descent\n"<<std::endl;
+    int choice;
+    std::cin >> choice;
+
+    // initialize the minimum point
+    std::vector<double> minimum{};
+
+    // compute the minimum with the preferred method
+    switch (choice) {
+        case 1:
+            minimum = Heavy_ball(data);
+            break;
+        case 2:
+            minimum = Nesterov(data);
+            break;
+        case 3:
+            minimum = gradient_method(data);
+            break;
+        default:
+            std::cerr << "Invalid choice\n"<<std::endl;
+            return 1;
+    }
+
 
     std::cout << "the minimum point is: ";
     for(std::size_t i=0; i<minimum.size(); ++i)
         std::cout<<minimum[i]<<"\t";
-
     std::cout<<std::endl;
 
     return 0;
