@@ -31,28 +31,10 @@ int main (){
     data.sigma = 0.3;
     data.mu = 0.5;
 
-    // define the minimum
-    //std::vector<double> minimum = data.start_point;
-
-    //StepMethod method = StepMethod::Armijo; // Metodo selezionato
+    // Call to the functio to evalutate the minimum of f
     auto minimum = gradient_method(data);
 
-    /*// Select the method for updating the step size
-    StepMethod selectedMethod = selectStepMethod();
-
-    // Find the minimum point using the selected method
-    // Call gradient_method with the selected method
-    if (selectedMethod == StepMethod::Armijo) {
-        minimum = gradient_method<StepMethod::Armijo>(data);
-    } else if (selectedMethod == StepMethod::Exponential_decay) {
-        minimum = gradient_method<StepMethod::Exponential_decay>(data);
-    } else if (selectedMethod == StepMethod::Inverse_decay) {
-        minimum = gradient_method<StepMethod::Inverse_decay>(data);
-    } else {
-        std::cerr << "Invalid method selected" << std::endl;
-        return 1;
-    }*/
-
+    // print the minimum
     std::cout << "the minimum point is: ";
     for(std::size_t i=0; i<minimum.size(); ++i)
         std::cout<<minimum[i]<<"\t";
