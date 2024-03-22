@@ -7,10 +7,18 @@ Matricola: 220332
 
 
 In this repository you find:  
+
+### Makefile
+Every directory contains its Makefile, so the code is 'ready to go'.
+In order to smoothly test the code just go in the desired directory
+and type `make`.
+To run the code and visualize the result, the minimum point of the function f, type `./main`.
+
+
 ### Vanilla:
 This directory contains the 'Vanilla' code, where the normal 
 gradient descent is implemented with the Armijo rule for the 
-step alpha.
+step size alpha.
 
 ### Choose_alpha:
 This directory contains the gradient descent method where is 
@@ -33,17 +41,8 @@ the gradient descent:
 * Nesterov method
 
 ### Centered_differences:
-This directory contains the gradient descent method where the gradient of the function f is computed
-via a finite difference method, in particular the centered differences. 
+This directory contains the code where the user can choose with type of gradient use:
+* Exact gradient
+* Finite Centered differences gradient
 
-### Heavy_ball_method:
-This directory contains the Heavy ball method, also called momentum. 
 
-### Nesterov_method:
-This directory contains the Nesterov method to implement the gradient descent.
-
-### Makefile
-Every directory contains its Makefile, so the code is 'ready to go'.
-In order to soothly compile and run the code just go in the desired directory
-and type `make`.
-To visualize the result, and so the minimum point of the function f, type `./main`
