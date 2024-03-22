@@ -7,7 +7,7 @@ std::vector<double> gradient_method(const Data &data)
     std::vector<double> current_point = data.start_point;
     std::vector<double> previous_point = data.start_point;
     double alpha = data.initial_step;
-    std::vector<double> grad = centered_differences(data, current_point);
+    std::vector<double> grad = data.grad( current_point);
 
     unsigned int i{0}; //counter 
     double error_step=data.epsilon_step+1;
@@ -20,7 +20,7 @@ std::vector<double> gradient_method(const Data &data)
         alpha = Armijo(data, current_point);
 
         //update current_point
-        current_point = current_point - alpha * centered_differences(data, current_point);
+        current_point = current_point - alpha * data.grad( current_point);
 
         //update the error_step
         error_step = norm(current_point - previous_point);
@@ -28,19 +28,13 @@ std::vector<double> gradient_method(const Data &data)
         ++i;
     }
 
-    //std::cout<<alpha<<std::endl; //problema con il valore di alpha
-    //std::cout<<norm(data.grad(current_point))<<std::endl;
-    //std::cout<<error_step<<std::endl; //0
-    //std::cout<<i<<std::endl;
-
-
     return current_point;
 }
 
 // function to find the next step size with the Armijo role
 double Armijo(const Data &data, std::vector<double> &current_point) {
     double alpha_k = data.initial_step;
-    std::vector<double> grad = centered_differences(data, current_point);
+    std::vector<double> grad = data.grad( current_point);
 
     //condition to be satisfied
     bool cond= false;
@@ -68,7 +62,7 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
     return alpha_k;
 }
 
-// function to evaluate the eucledean norm of a vector
+// function to evaluate the euclidean norm of a vector
 double norm(const std::vector<double> &x) {
     double vec_norm = 0.0;
     //euclidean norm
@@ -81,29 +75,33 @@ double norm(const std::vector<double> &x) {
     return vec_norm;
 }
 
-// Function to evaluate the gradient with the Centered differences
-std::vector<double> centered_differences(const Data& data, const std::vector<double>& x) {
-    // dimension of the space
-    size_t n = x.size();
-    // Gradient vector
-    std::vector<double> grad{};
+// centered differences method
+std::function<std::vector<double>(std::vector<double>)> centered_differences(const std::function<double(std::vector<double>)>& f, double epsilon ) {
+    return [f, epsilon](std::vector<double> x) {
+        std::vector<double> gradient;
+        gradient.reserve(x.size());
 
-    // Evaluation of the gradient
-    for (size_t i = 0; i < n; ++i) {
+        // iterate on each dimension (2)
+        for (size_t i = 0; i < x.size(); ++i) {
+            // x+h
+            double x_plus_h = x[i] + epsilon;
+            // x-h
+            double x_minus_h = x[i] - epsilon;
 
-        // Evaluate the function in x + h
-        std::vector<double> x_plus_h = x;
-        x_plus_h[i] += data.h;
-        double f_plus_h = data.f(x_plus_h);
+            std::vector<double> x_plus = x;
+            x_plus[i] = x_plus_h;
 
-        // Evaluate the function in x - h
-        std::vector<double> x_minus_h = x;
-        x_minus_h[i] -= data.h;
-        double f_minus_h = data.f(x_minus_h);
+            std::vector<double> x_minus = x;
+            x_minus[i] = x_minus_h;
 
-        grad.emplace_back((f_plus_h - f_minus_h) / (2.0 * data.h));
-    }
-    return grad;
+            //centered differences formula
+            double partial_derivative = (f(x_plus) - f(x_minus)) / (2 * epsilon);
+
+            gradient.push_back(partial_derivative);
+        }
+
+        return gradient;
+    };
 }
 
 // operator - between two vectors

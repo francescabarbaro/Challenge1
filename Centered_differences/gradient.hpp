@@ -11,7 +11,7 @@ struct Data
 {
     
     std::function<double(std::vector<double>)> f;                   //function
-    //std::function<std::vector<double>(std::vector<double>)> grad;   //gradient
+    std::function<std::vector<double>(std::vector<double>)> grad;   //gradient
     std::vector<double> start_point{0.0,0.0};                       //starting point
     
     double epsilon_step{0.01};  //tolerance on the step length
@@ -22,12 +22,15 @@ struct Data
     double h = 1e-6;            //step for Centered differences
 };
 
-// declaratio of the used methods
+// declaration of the used methods
 std::vector<double> gradient_method(const Data& );
 double Armijo(const Data& , std::vector<double> & );
 double norm(const std::vector<double> &  );
-std::vector<double> centered_differences(const Data&, const std::vector<double>&);
 
+// function returning a function wrapper to compute the gradient with finite difference method
+std::function<std::vector<double>(std::vector<double>)> centered_differences(const std::function<double(std::vector<double>)>& , double);
+
+// operators
 std::vector<double> operator-(std::vector<double>, std::vector<double>);
 std::vector<double> operator*(double, std::vector<double>);
 
