@@ -1,6 +1,6 @@
 #include "gradient.hpp"
 
-// Implementation of the regular gradient method
+// Implementation of the regular gradient descent method
 std::vector<double> gradient_method(const Data &data)
 {
     //initial values
@@ -71,7 +71,7 @@ std::vector<double> Heavy_ball(const Data &data)
 }
 
 
-// Implementation of the Heavy ball method
+// Implementation of the Nesterov method
 std::vector<double> Nesterov(const Data &data)
 {
     //initial values
@@ -110,8 +110,6 @@ std::vector<double> Nesterov(const Data &data)
 
     return current_point;
 }
-
-
 
 
 //Function to define the next step with inverse decay method

@@ -6,7 +6,7 @@
 #include <vector>
 #include <iostream>
 
-//structure called Data, defining the data and parameters needed
+//structure called Data, containing the data and parameters needed
 struct Data
 {
 
@@ -28,10 +28,12 @@ std::vector<double> gradient_method(const Data& );
 std::vector<double> Heavy_ball(const Data& );
 std::vector<double> Nesterov(const Data& );
 
+// Function to decide the next step size
 double Inverse_decay(const Data& , unsigned int, const double );
 
 double norm(const std::vector<double> &  );
 
+// operator to deals with  vectors
 std::vector<double> operator-(std::vector<double>, std::vector<double>);
 std::vector<double> operator+(std::vector<double>, std::vector<double>);
 std::vector<double> operator*(double, std::vector<double>);
