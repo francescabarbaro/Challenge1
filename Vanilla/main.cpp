@@ -34,6 +34,7 @@ int main (){
     std::vector<double> minimum = data.start_point;
     minimum = gradient_method(data);
 
+    // print the minimum point
     std::cout << "the minimum point is: ";
     for(std::size_t i=0; i<minimum.size(); ++i)
         std::cout<<minimum[i]<<"\t";

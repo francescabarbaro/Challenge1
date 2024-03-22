@@ -1,6 +1,6 @@
 #include "gradient.hpp"
 
-
+// Function to compute the gradient descent
 std::vector<double> gradient_method(const Data &data)
 {
     //initial values
@@ -9,34 +9,32 @@ std::vector<double> gradient_method(const Data &data)
     double alpha = data.initial_step;
 
     unsigned int i{0}; //counter 
-    double error_step=data.epsilon_step+1;
+    double error_step=data.epsilon_step+1; //error to take in account the distance between two successive points
+
+    // while loop with the convergence conditions
     while(i< data.maxit &&  error_step > data.epsilon_step && norm(data.grad(current_point)) > data.epsilon_res){
 
         //update previous_point
         previous_point = current_point;
 
-        //update step size
-        alpha = Armijo(data, current_point);
-
         //update current_point
         current_point = current_point - alpha * data.grad(current_point);
 
+        //update step size
+        alpha = Armijo(data, current_point);
+
         //update the error_step
         error_step = norm(current_point - previous_point);
+
         //increase counter
         ++i;
     }
 
-    //std::cout<<alpha<<std::endl; //problema con il valore di alpha
-    //std::cout<<norm(data.grad(current_point))<<std::endl;
-    //std::cout<<error_step<<std::endl; //0
-    //std::cout<<i<<std::endl;
-
-
+    // return of the minimum point
     return current_point;
 }
 
-// function to find the next step size with the Armijo role
+// function to find the next step size with the Armijo rule
 double Armijo(const Data &data, std::vector<double> &current_point) {
     double alpha_k = data.initial_step;
     std::vector<double> grad = data.grad(current_point);
@@ -52,6 +50,7 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
 
     //counter
     unsigned int i = 0;
+
     //while loop to find the next step size
     while(!cond && i<data.maxit){
         //update alpha
@@ -63,11 +62,11 @@ double Armijo(const Data &data, std::vector<double> &current_point) {
         //increase the counter
         ++i;
     }
-    // DOVREI CONTROLLARE SE HA TROVATO O NO
+    // return the value of alpha
     return alpha_k;
 }
 
-// function to evaluate the eucledean norm of a vector
+// function to evaluate the euclidean norm of a vector
 double norm(const std::vector<double> &x) {
     double vec_norm = 0.0;
     //euclidean norm
