@@ -6,7 +6,7 @@
 #include <vector>
 #include <iostream>
 
-//structure called Data, defining the data and parameters needed
+//structure called Data, containing the data and parameters needed
 struct Data
 {
 
@@ -33,7 +33,7 @@ enum class StepMethod {
 // inside the cpp of this function you can select the method for choose the step alpha
 std::vector<double> gradient_method(const Data& );
 
-// Function to choose the method
+// Template Function to select the preferred method
 template <StepMethod method> auto choose_alpha(const Data &, std::vector<double> & , unsigned int);
 
 // Functions to implement the choice of alpha

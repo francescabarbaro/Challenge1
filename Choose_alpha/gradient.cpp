@@ -40,31 +40,23 @@ std::vector<double> gradient_method(const Data &data)
         // Update step size based on the selected method using constexpr
         /*
          * HOW TO SELECT THE METHOD:
-         * in choose_alpha<...>
-         * 1) Armijo: replace ... with → StepMethod::Armijo
-         * 2) Exponential_decay: replace ... with → StepMethod::Exponential_decay
-         * 3) Inverse_decay: replace ... with → StepMethod::Inverse_decay
+         * in choose_alpha<...> is written the name of the method that will be called.
+         * 1) Armijo: → StepMethod::Armijo
+         * 2) Exponential_decay: → StepMethod::Exponential_decay
+         * 3) Inverse_decay: → StepMethod::Inverse_decay
+         * Decomment the one you want to use
          *
          * if a non-existing choice is made the defaul method Armijo is employed
          */
         alpha = choose_alpha<StepMethod::Armijo>(data, current_point, i);
-
-
-        std::cout<<"alpha: "<<alpha<<std::endl;
-        std::cout<<"norm grad: "<<norm(data.grad(current_point))<<std::endl;
-
+        //alpha = choose_alpha<StepMethod::Exponential_decay>(data, current_point, i);
+        //alpha = choose_alpha<StepMethod::Inverse_decay>(data, current_point, i);
 
         //update the error_step
         error_step = norm(current_point - previous_point);
         //increase counter
         ++i;
     }
-
-    //std::cout<<alpha<<std::endl; //problema con il valore di alpha
-    std::cout<<norm(data.grad(current_point))<<std::endl;
-    std::cout<<error_step<<std::endl; //0
-    std::cout<<"number of iteration: "<<i<<std::endl;
-
 
     return current_point;
 }
@@ -112,8 +104,6 @@ double Inverse_decay(const Data & data, unsigned int k) {
     alpha_k = data.initial_step/(1+data.mu*k);
     return alpha_k;
 }
-
-
 
 // function to evaluate the euclidean norm of a vector
 double norm(const std::vector<double> &x) {

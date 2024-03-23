@@ -31,7 +31,7 @@ int main (){
     data.sigma = 0.3;
     data.mu = 0.5;
 
-    // Call to the functio to evalutate the minimum of f
+    // Call to the function to evalutate the minimum of f
     auto minimum = gradient_method(data);
 
     // print the minimum
