@@ -1,0 +1,8 @@
+README.md is very good.
+
+Please clean the main file in the folder Choose_method :)
+just:
+git rm main
+
+I love the overall structure of the github.
+The code is well written! Unfortunately no muparser is present...
